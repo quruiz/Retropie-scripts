@@ -46,7 +46,7 @@ if __name__ == '__main__':
         # isn't already running.
         # fan.value` returns 1 for "on" and 0 for "off"
         if temp > ON_THRESHOLD and not value:
-			GPIO.output(GPIO_PIN, True)
+            GPIO.output(GPIO_PIN, True)
             value = True
 
         # Stop the fan if the fan is running and the temperature has dropped
