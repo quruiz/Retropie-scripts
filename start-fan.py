@@ -4,8 +4,7 @@ import subprocess
 import time
 import os
 
-from gpiozero import OutputDevice
-
+import RPi.GPIO as GPIO
 
 ON_THRESHOLD = 65.0  # (degrees Celsius) Fan kicks on at this temperature.
 OFF_THRESHOLD = 55.0  # (degress Celsius) Fan shuts off at this temperature.
@@ -36,7 +35,8 @@ if __name__ == '__main__':
     if OFF_THRESHOLD >= ON_THRESHOLD:
         raise RuntimeError('OFF_THRESHOLD must be less than ON_THRESHOLD')
 
-    fan = OutputDevice(GPIO_PIN)
+	GPIO.setmode(GPIO.BOARD)
+	GPIO.setup(GPIO_PIN, GPIO.OUT)
 
     value = False
     while True:
@@ -46,13 +46,13 @@ if __name__ == '__main__':
         # isn't already running.
         # fan.value` returns 1 for "on" and 0 for "off"
         if temp > ON_THRESHOLD and not value:
-            fan.on()
+			GPIO.output(GPIO_PIN, True)
             value = True
 
         # Stop the fan if the fan is running and the temperature has dropped
         # to 10 degrees below the limit.
         elif value and temp < OFF_THRESHOLD:
-            fan.off()
+            GPIO.output(GPIO_PIN, False)
             value = False
 
         #print("temp={}\nfan={}\n".format(temp, value))

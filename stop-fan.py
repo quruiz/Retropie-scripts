@@ -4,9 +4,10 @@ import subprocess
 import time
 import os
 
-from gpiozero import OutputDevice
+import RPi.GPIO as GPIO
 
 GPIO_PIN = 18  # Which GPIO pin you're using to control the fan.
 
-fan = OutputDevice(GPIO_PIN)
-fan.off()
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(GPIO_PIN, GPIO.OUT)
+GPIO.output(GPIO_PIN, False)
